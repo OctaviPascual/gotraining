@@ -71,34 +71,42 @@ func process(fc FetchCounter) {
 // retrieved. It embeds Feed to get the Fetch and Count behavior but
 // "overrides" Fetch to have its cache.
 type CachingFeed struct {
-	// TODO embed *Feed and add a field for a map[string]Document.
+	*Feed
+	cache map[string]Document
 }
 
 // NewCachingFeed initializes a CachingFeed for use.
 func NewCachingFeed(f *Feed) *CachingFeed {
-
-	// TODO create a CachingFeed with an initialized map and embedded feed.
-	// Return its address.
-
-	return nil // Remove this line.
+	return &CachingFeed{
+		Feed:  f,
+		cache: map[string]Document{},
+	}
 }
 
 // Fetch calls the embedded type's Fetch method if the key is not cached.
 func (cf *CachingFeed) Fetch(key string) (Document, error) {
+	cachedDocument, ok := cf.cache[key]
+	if ok {
+		return cachedDocument, nil
+	}
 
-	// TODO implement this method. Check the map field for the specified key and
-	// return it if found. If it's not found, call the embedded types Fetch
-	// method. Store the result in the map before returning it.
+	document, err := cf.Feed.Fetch(key)
+	if err != nil {
+		return Document{}, err
+	}
+	cf.cache[key] = document
 
-	return Document{}, nil // Remove this line.
+	return document, nil
 }
 
 // ==================================================
 
 func main() {
+	feed := &Feed{}
 	fmt.Println("Using Feed directly")
-	process(&Feed{})
+	process(feed)
 
 	// Call process again with your CachingFeed.
-	//fmt.Println("Using CachingFeed")
+	fmt.Println("Using CachingFeed")
+	process(NewCachingFeed(feed))
 }
