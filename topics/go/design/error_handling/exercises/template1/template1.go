@@ -10,34 +10,59 @@
 // function and check the return error value. Display a proper message to the screen.
 package main
 
-// Add imports.
+import (
+	"errors"
+	"fmt"
+)
 
 var (
-// Declare an error variable named ErrInvalidValue using the New
-// function from the errors package.
+	// ErrInvalidValue is returned when the value is invalid.
+	ErrInvalidValue = errors.New("invalid value")
 
-// Declare an error variable named ErrAmountTooLarge using the New
-// function from the errors package.
+	// ErrAmountTooLarge is returned when the value is too large.
+	ErrAmountTooLarge = errors.New("amount too large")
 )
 
 // Declare a function named checkAmount that accepts a value of
 // type float64 and returns an error interface value.
-func checkAmount( /* parameter */ ) /* return arg */ {
-
+func checkAmount(amount float64) error {
 	// Is the parameter equal to zero. If so then return
 	// the error variable.
+	if amount == 0 {
+		return ErrInvalidValue
+	}
 
 	// Is the parameter greater than 1000. If so then return
 	// the other error variable.
+	if amount > 1000 {
+		return ErrAmountTooLarge
+	}
 
 	// Return nil for the error value.
+	return nil
 }
 
 func main() {
+	amount := 42.0
 
 	// Call the checkAmount function and check the error. Then
 	// use a switch/case to compare the error with each variable.
 	// Add a default case. Return if there is an error.
+	if err := checkAmount(amount); err != nil {
+		switch err {
+		case ErrInvalidValue:
+			fmt.Println("Value provided is not valid:", err)
+			return
+		case ErrAmountTooLarge:
+			fmt.Println("Value provided is not too large:", err)
+			return
+
+		default:
+			fmt.Println(err)
+			return
+		}
+	}
 
 	// Display everything is good.
+	fmt.Println("Everything is good")
 }

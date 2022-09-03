@@ -11,33 +11,55 @@
 // interface.
 package main
 
-// Add imports.
+import (
+	"errors"
+	"fmt"
+)
 
 // Declare a struct type named appError with three fields, err of type error,
 // message of type string and code of type int.
+type appError struct {
+	err     error
+	message string
+	code    int
+}
 
-// Declare a method for the appError struct type that implements the
-// error interface.
+// Error implements the error interface for appError.
+func (e *appError) Error() string {
+	return fmt.Sprintf("err=%s, message=%s, code=%d", e.err.Error(), e.message, e.code)
+}
 
-// Declare a method for the appError struct type named Temporary that returns
-// true when the value of the code field is not 9.
+// Temporary returns true when the value of the code is not 9.
+func (e *appError) Temporary() bool {
+	return e.code != 9
+}
 
 // Declare the temporary interface type with a method named Temporary that
 // takes no parameters and returns a bool.
+type temporary interface {
+	Temporary() bool
+}
 
 // Declare a function named checkFlag that accepts a boolean value and
 // returns an error interface value.
-func checkFlag( /* parameter */ ) /* return arg */ {
-
+func checkFlag(b bool) error {
 	// If the parameter is false return an appError.
+	if !b {
+		return &appError{
+			err:     errors.New("app error"),
+			message: "message",
+			code:    42,
+		}
+	}
 
 	// Return a default error.
+	return errors.New("default error")
 }
 
 func main() {
-
 	// Call the checkFlag function to simulate an error of the
 	// concrete type.
+	err := checkFlag(false)
 
 	// Check the concrete type and handle appropriately.
 	switch e := err.(type) {
@@ -45,7 +67,14 @@ func main() {
 	// Apply the case for the existence of the Temporary behavior.
 	// Log the error and write a second message only if the
 	// error is not temporary.
+	case temporary:
+		fmt.Println(err)
+		if !e.Temporary() {
+			fmt.Println("error is not temporary")
+		}
 
 	// Apply the default case and just log the error.
+	default:
+		fmt.Println(err)
 	}
 }
