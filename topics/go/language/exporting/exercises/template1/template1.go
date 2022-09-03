@@ -12,16 +12,25 @@
 // field values of that toy value.
 package main
 
-// Add imports.
-// "github.com/ardanlabs/gotraining/topics/go/language/exporting/exercises/template1/toy"
+import (
+	"fmt"
+
+	"github.com/ardanlabs/gotraining/topics/go/language/exporting/exercises/template1/toy"
+)
 
 func main() {
-
 	// Use the New function from the toy package to create a value of
 	// type toy.
+	doll := toy.New("doll", 12)
 
 	// Use the methods from the toy value to set some initialize
 	// values.
+	doll.UpdateOnHand(2)
+	doll.SoldCount(2)
 
 	// Display each field separately from the toy value.
+	fmt.Println("Name", doll.Name)
+	fmt.Println("Weight", doll.Weight)
+	fmt.Println("OnHand", doll.OnHand())
+	fmt.Println("Sold", doll.Sold())
 }
