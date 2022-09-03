@@ -6,6 +6,10 @@
 // them to complete a set of predefined tasks.
 package main
 
+import (
+	"fmt"
+)
+
 // Add import(s).
 
 // administrator represents a person or other entity capable of administering
@@ -60,37 +64,64 @@ func (l *devlist) Dequeue() developer {
 // =============================================================================
 
 // Declare a concrete type named sysadmin with a name field of type string.
+type sysadmin struct {
+	name string
+}
 
 // Declare a method named administrate for the sysadmin type, implementing the
 // administrator interface. administrate should print out the name of the
 // sysadmin, as well as the system they are administering.
+func (s *sysadmin) administrate(system string) {
+	fmt.Println("Sysadmin " + s.name + " is administering system " + system)
+}
 
 // Declare a concrete type named programmer with a name field of type string.
+type programmer struct {
+	name string
+}
 
 // Declare a method named develop for the programmer type, implementing the
 // developer interface. develop should print out the name of the
 // programmer, as well as the system they are coding.
+func (p *programmer) develop(system string) {
+	fmt.Println("Programmer " + p.name + " is coding system " + system)
+}
 
 // Declare a concrete type named company. Declare it as the composition of
 // the administrator and developer interface types.
+type company struct {
+	administrator
+	developer
+}
 
 // =============================================================================
 
 func main() {
 
 	// Create a variable named admins of type adminlist.
+	var admins adminlist
 
 	// Create a variable named devs of type devlist.
+	var devs devlist
 
 	// Enqueue a new sysadmin onto admins.
+	admins.Enqueue(&sysadmin{name: "Alice"})
 
 	// Enqueue two new programmers onto devs.
+	devs.Enqueue(&programmer{name: "Dan"})
+	devs.Enqueue(&programmer{name: "David"})
 
 	// Create a variable named cmp of type company, and initialize it by
 	// hiring (dequeuing) an administrator from admins and a developer from devs.
+	cmp := company{
+		administrator: admins.Dequeue(),
+		developer:     devs.Dequeue(),
+	}
 
 	// Enqueue the company value on both lists since the company implements
 	// each interface.
+	admins.Enqueue(cmp)
+	devs.Enqueue(cmp)
 
 	// A set of tasks for administrators and developers to perform.
 	tasks := []struct {
@@ -106,15 +137,16 @@ func main() {
 	for _, task := range tasks {
 
 		// Check if the task needs an administrator else use a developer.
-		if {
+		if task.needsAdmin {
 
 			// Dequeue an administrator value from the admins list and
 			// call the administrate method.
-
+			admins.Dequeue().administrate(task.system)
 			continue
 		}
 
 		// Dequeue a developer value from the devs list and
 		// call the develop method.
+		devs.Dequeue().develop(task.system)
 	}
 }
