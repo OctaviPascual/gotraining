@@ -9,31 +9,47 @@
 // in a slice. Print the slice values then terminate the program.
 package main
 
-// Add imports.
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 // Declare constant for number of goroutines.
+const goroutines = 10
 
 func init() {
 	// Seed the random number generator.
+	rand.Seed(time.Now().UnixNano())
 }
 
 func main() {
 
 	// Create the buffered channel with room for
 	// each goroutine to be created.
+	ch := make(chan int, goroutines)
 
 	// Iterate and launch each goroutine.
-	{
+	for i := 0; i < goroutines; i++ {
 
 		// Create an anonymous function for each goroutine that
 		// generates a random number and sends it on the channel.
+		go func() { ch <- rand.Intn(10) }()
 	}
 
 	// Create a variable to be used to track received messages.
 	// Set the value to the number of goroutines created.
+	received := goroutines
 
 	// Iterate receiving each value until they are all received.
 	// Store them in a slice of ints.
+	values := make([]int, 0, goroutines)
+	for received > 0 {
+		value := <-ch
+		values = append(values, value)
+		received--
+	}
 
 	// Print the values in our slice.
+	fmt.Println(values)
 }
