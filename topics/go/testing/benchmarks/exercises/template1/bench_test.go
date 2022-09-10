@@ -8,13 +8,45 @@
 // Identify which function performs the best.
 package main
 
-// Add imports.
+import (
+	"fmt"
+	"strconv"
+	"testing"
+)
+
+const number = 12341234
+
+var gs string
 
 // BenchmarkSprintf provides performance numbers for the fmt.Sprintf function.
-// s := fmt.Sprintf("%d", number)
+func BenchmarkSprintf(b *testing.B) {
+	var s string
+
+	for i := 0; i < b.N; i++ {
+		s = fmt.Sprintf("%d", number)
+	}
+
+	gs = s
+}
 
 // BenchmarkFormat provides performance numbers for the strconv.FormatInt function.
-// s := strconv.FormatInt(number, 10)
+func BenchmarkFormat(b *testing.B) {
+	var s string
+
+	for i := 0; i < b.N; i++ {
+		s = strconv.FormatInt(number, 10)
+	}
+
+	gs = s
+}
 
 // BenchmarkItoa provides performance numbers for the strconv.Itoa function.
-// s := strconv.Itoa(number)
+func BenchmarkItoa(b *testing.B) {
+	var s string
+
+	for i := 0; i < b.N; i++ {
+		s = strconv.Itoa(number)
+	}
+
+	gs = s
+}
