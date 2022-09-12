@@ -5,13 +5,22 @@
 // map with five values and iterate over the map to display the key/value pairs.
 package main
 
-// Add imports.
+import (
+	"fmt"
+)
 
 func main() {
 
 	// Declare and make a map of integer type values.
+	m := make(map[string]int)
 
 	// Initialize some data into the map.
+	m["one"] = 1
+	m["two"] = 2
+	m["three"] = 3
 
 	// Display each key/value pair.
+	for k, v := range m {
+		fmt.Printf("key=%s, value=%d\n", k, v)
+	}
 }

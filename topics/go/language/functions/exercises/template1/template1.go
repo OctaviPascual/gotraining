@@ -9,23 +9,39 @@
 // the error value.
 package main
 
-// Add imports.
+import (
+	"fmt"
+)
 
 // Declare a type named user.
+type user struct {
+	name string
+	age  int
+}
 
 // Declare a function that creates user type values and returns a pointer
 // to that value and an error value of nil.
-func funcName() /* (pointer return arg, error return arg) */ {
+func newUser() (*user, error) /* (pointer return arg, error return arg) */ {
 
 	// Create a value of type user and return the proper values.
+	return &user{"Alice", 18}, nil
 }
 
 func main() {
 
 	// Use the function to create a value of type user. Check
 	// the error being returned.
+	u, err := newUser()
+	if err != nil {
+		panic("error creating user")
+	}
 
 	// Display the value that the pointer points to.
+	fmt.Println(*u)
 
 	// Call the function again and just check the error.
+	_, err = newUser()
+	if err != nil {
+		panic("error creating user")
+	}
 }

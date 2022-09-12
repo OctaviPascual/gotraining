@@ -7,7 +7,9 @@
 // know it.
 package main
 
-// Add imports
+import (
+	"fmt"
+)
 
 func main() {
 
@@ -16,6 +18,21 @@ func main() {
 	age := 6
 
 	// If the user's name is on a special list then give them a secret greeting.
+	special := false
+	for _, n := range []string{"Alice", "Bob"} {
+		if name == n {
+			special = true
+		}
+	}
+
+	if special {
+		fmt.Println("You are special!")
+	} else {
+		fmt.Println("Welcome!")
+	}
 
 	// If the user is old enough then tell them a secret.
+	if age > 18 {
+		fmt.Println("You are of legal age")
+	}
 }
