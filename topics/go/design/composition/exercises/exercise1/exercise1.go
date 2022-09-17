@@ -6,7 +6,6 @@
 // them to complete a set of predefined tasks.
 package main
 
-// Add import(s).
 import "fmt"
 
 // administrator represents a person or other entity capable of administering

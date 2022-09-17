@@ -9,7 +9,6 @@
 // Run the program in parallel.
 package main
 
-// Add imports.
 import (
 	"fmt"
 	"runtime"

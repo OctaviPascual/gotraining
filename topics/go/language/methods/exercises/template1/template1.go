@@ -11,8 +11,6 @@ import (
 	"fmt"
 )
 
-// Add imports.
-
 // Declare a struct that represents a ball player.
 // Include fields called name, atBats and hits.
 type player struct {

@@ -10,8 +10,6 @@ import (
 	"fmt"
 )
 
-// Add import(s).
-
 // administrator represents a person or other entity capable of administering
 // hardware and software infrastructure.
 type administrator interface {
